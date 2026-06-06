@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arivo Hotel — Airport Transfer Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #1C2B3A;
+      --navy-light: #2C3E4A;
+      --orange: #E07B00;
+      --orange-light: #F5A623;
+      --cream: #F5F3EF;
+      --cream-dark: #EAE7E0;
+      --white: #FFFFFF;
+      --gray: #6B7280;
+      --gray-light: #D1D5DB;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ========== NAV ========== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(28,43,58,0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 5%;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 38px;
+      height: 38px;
+    }
+
+    .nav-logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .nav-logo-text span:first-child {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 3px;
+    }
+
+    .nav-logo-text span:last-child {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--orange-light);
+      letter-spacing: 5px;
+      margin-top: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover { color: var(--orange-light); }
+
+    .nav-cta {
+      background: var(--orange);
+      color: var(--white) !important;
+      padding: 10px 24px;
+      border-radius: 3px;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--orange-light) !important; color: var(--white) !important; }
+
+    /* ========== PAGES ========== */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ========== HOME ========== */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #1C2B3A 0%, #0F1E2B 55%, #1a2f20 100%);
+      display: flex;
+      align-items: center;
+      padding: 120px 8% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(224,123,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(224,123,0,0.4), transparent);
+    }
+
+    /* Diagonal lines background texture */
+    .hero-bg-lines {
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.012) 60px,
+        rgba(255,255,255,0.012) 61px
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 620px;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(224,123,0,0.15);
+      border: 1px solid rgba(224,123,0,0.3);
+      color: var(--orange-light);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--orange-light);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--orange-light);
+    }
+
+    .hero p {
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      margin-bottom: 44px;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: var(--white);
+      padding: 16px 36px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(224,123,0,0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 16px 36px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--orange-light);
+      color: var(--orange-light);
+    }
+
+    /* Hero right side visual */
+    .hero-visual {
+      position: absolute;
+      right: 6%;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.12;
+      z-index: 1;
+      animation: fadeUp 1.2s 0.3s ease both;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--white);
+      border-bottom: 3px solid var(--orange);
+      padding: 32px 8%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 12px;
+      border-right: 1px solid var(--cream-dark);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+
+    .stat-number span { color: var(--orange); }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 6px;
+    }
+
+    /* Features */
+    .section {
+      padding: 100px 8%;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 54px);
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.15;
+    }
+
+    .section-title em { font-style: italic; color: var(--orange); }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--gray);
+      margin-top: 16px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 6px;
+      padding: 40px 32px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--orange);
+      transition: height 0.3s;
+    }
+
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.09); }
+    .feature-card:hover::before { height: 100%; }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: rgba(224,123,0,0.1);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 24px;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* How it works */
+    .how-section {
+      background: var(--navy);
+      padding: 100px 8%;
+    }
+
+    .how-section .section-title { color: var(--white); }
+    .how-section .section-sub { color: rgba(255,255,255,0.55); }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 32px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(224,123,0,0.4), transparent);
+    }
+
+    .step-item {
+      text-align: center;
+      padding: 32px 20px;
+      position: relative;
+    }
+
+    .step-number {
+      width: 64px; height: 64px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 auto 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-item h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .step-item p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+    }
+
+    /* Testimonial */
+    .testimonial-section {
+      background: var(--cream-dark);
+      padding: 80px 8%;
+      text-align: center;
+    }
+
+    .testimonial-quote {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 36px);
+      font-style: italic;
+      color: var(--navy);
+      max-width: 750px;
+      margin: 0 auto 24px;
+      line-height: 1.5;
+    }
+
+    .testimonial-author {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+    }
+
+    /* ========== BOOK A RIDE ========== */
+    .book-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #0F1E2B 100%);
+      padding: 140px 8% 80px;
+      text-align: center;
+    }
+
+    .book-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 68px);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .book-hero p {
+      color: rgba(255,255,255,0.55);
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .book-form-section {
+      padding: 80px 8%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .form-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 56px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+      border: 1px solid var(--cream-dark);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 14px 16px;
+      border: 1px solid var(--cream-dark);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--navy);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--orange);
+      background: var(--white);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-divider {
+      grid-column: 1 / -1;
+      border: none;
+      border-top: 1px solid var(--cream-dark);
+      margin: 8px 0;
+    }
+
+    .form-section-title {
+      grid-column: 1 / -1;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--navy);
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--orange);
+      display: inline-block;
+    }
+
+    .form-submit {
+      grid-column: 1 / -1;
+      margin-top: 12px;
+    }
+
+    .form-submit .btn-primary {
+      width: 100%;
+      text-align: center;
+      padding: 18px;
+      font-size: 14px;
+    }
+
+    .form-note {
+      grid-column: 1 / -1;
+      font-size: 12px;
+      color: var(--gray);
+      text-align: center;
+      margin-top: -8px;
+    }
+
+    /* ========== ABOUT ========== */
+    .about-hero {
+      background: linear-gradient(135deg, #0F1E2B 0%, var(--navy) 100%);
+      padding: 140px 8% 80px;
+    }
+
+    .about-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 68px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .about-hero h1 em { font-style: italic; color: var(--orange-light); }
+
+    .about-hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .value-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 24px;
+    }
+
+    .value-card .icon { font-size: 28px; margin-bottom: 12px; }
+    .value-card h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .value-card p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    .about-story {
+      padding: 100px 8%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-story-text h2 {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .about-story-text p {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .about-image-placeholder {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
+      border-radius: 8px;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-image-placeholder::before {
+      content: '✈';
+      font-size: 120px;
+      opacity: 0.08;
+      position: absolute;
+      top: 20px; right: 20px;
+    }
+
+    .about-image-inner {
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .about-image-inner .big-icon { font-size: 64px; }
+    .about-image-inner p { font-size: 13px; margin-top: 12px; letter-spacing: 2px; }
+
+    /* Team section */
+    .team-section {
+      background: var(--navy);
+      padding: 80px 8%;
+      text-align: center;
+    }
+
+    .team-section .section-title { color: var(--white); }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 48px;
+    }
+
+    .team-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 36px 24px;
+    }
+
+    .team-avatar {
+      width: 72px; height: 72px;
+      background: rgba(224,123,0,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 20px;
+    }
+
+    .team-card h4 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .team-card .role {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange-light);
+    }
+
+    /* ========== CONTACT ========== */
+    .contact-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #0F1E2B 100%);
+      padding: 140px 8% 80px;
+      text-align: center;
+    }
+
+    .contact-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 68px);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .contact-hero p {
+      color: rgba(255,255,255,0.5);
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .contact-section {
+      padding: 80px 8%;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .contact-info h3 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 32px;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 28px;
+      align-items: flex-start;
+    }
+
+    .contact-item-icon {
+      width: 44px; height: 44px;
+      background: rgba(224,123,0,0.1);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .contact-item-text strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 4px;
+    }
+
+    .contact-item-text span {
+      font-size: 15px;
+      color: var(--navy);
+      font-weight: 400;
+    }
+
+    .contact-form-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 48px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.07);
+      border: 1px solid var(--cream-dark);
+    }
+
+    /* ========== FAQ ========== */
+    .faq-hero {
+      background: linear-gradient(135deg, #0F1E2B 0%, var(--navy) 100%);
+      padding: 140px 8% 80px;
+      text-align: center;
+    }
+
+    .faq-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 68px);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .faq-hero p {
+      color: rgba(255,255,255,0.5);
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .faq-section {
+      padding: 80px 8%;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .faq-category {
+      margin-bottom: 48px;
+    }
+
+    .faq-category-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--cream-dark);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--navy);
+      transition: color 0.2s;
+      user-select: none;
+    }
+
+    .faq-question:hover { color: var(--orange); }
+
+    .faq-toggle {
+      width: 28px; height: 28px;
+      background: var(--cream-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--orange);
+      flex-shrink: 0;
+      transition: transform 0.3s, background 0.2s;
+    }
+
+    .faq-item.open .faq-toggle {
+      transform: rotate(45deg);
+      background: var(--orange);
+      color: white;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.3s;
+    }
+
+    .faq-answer p {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.8;
+      padding-bottom: 20px;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: #0D1820;
+      padding: 64px 8% 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--orange-light); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+    }
+
+    .footer-bottom p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .footer-bottom span { color: var(--orange-light); }
+
+    /* ========== SUCCESS MSG ========== */
+    .success-msg {
+      display: none;
+      background: rgba(224,123,0,0.1);
+      border: 1px solid rgba(224,123,0,0.3);
+      color: var(--orange);
+      padding: 16px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: repeat(2,1fr); }
+      .steps-grid::before { display: none; }
+      .about-hero-inner,
+      .about-story,
+      .contact-section { grid-template-columns: 1fr; }
+      .about-values { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">
+    <svg class="nav-logo-icon" viewBox="0 0 80 80" fill="none" style="filter: drop-shadow(0 0 8px rgba(245,166,35,0.7)) drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+      <!-- Outer glow ring -->
+      <circle cx="40" cy="42" r="36" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.25)" stroke-width="1"/>
+      <!-- Main triangle - bright white/light so it pops -->
+      <polygon points="40,8 72,68 8,68" fill="#FFFFFF"/>
+      <!-- Inner cutout -->
+      <polygon points="40,26 54,54 26,54" fill="#1C2B3A"/>
+      <!-- Bottom gap -->
+      <rect x="26" y="62" width="28" height="8" fill="#1C2B3A"/>
+      <!-- Orange accent slash — vivid -->
+      <polygon points="10,67 12,62 42,30 46,34 12,69" fill="#F5A623"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span style="color:#FFFFFF; text-shadow: 0 0 12px rgba(255,255,255,0.3);">ARIVO</span>
+      <span style="color:#F5A623; letter-spacing:5px;">HOTEL TRANSFER</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('about')">About Us</a></li>
+    <li><a onclick="showPage('faq')">FAQ</a></li>
+    <li><a onclick="showPage('contact')">Contact</a></li>
+    <li><a onclick="showPage('register')" class="nav-cta">Register Now</a></li>
+  </ul>
+</nav>
+
+<!-- ===================== HOME PAGE ===================== -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg-lines"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Hotel Transportation Marketplace</div>
+      <h1>The Smarter Way<br/>Hotels <em>Manage</em><br/>Transfers</h1>
+      <p>Arivo Hotel is a marketplace connecting hotels with the best available transportation rates — <strong style="color:var(--orange-light)">hotels gain commission, no platform fee,</strong> and guests book directly in a fully <strong style="color:var(--orange-light)">contactless</strong> experience.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('register')">Register Now</button>
+        <button class="btn-outline" onclick="showPage('about')">Learn More</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg width="520" height="520" viewBox="0 0 520 520" fill="none">
+        <polygon points="260,20 500,480 20,480" stroke="white" stroke-width="2" fill="none"/>
+        <polygon points="260,100 420,400 100,400" stroke="white" stroke-width="1" fill="none"/>
+        <polygon points="260,180 340,320 180,320" stroke="white" stroke-width="0.5" fill="none"/>
+        <line x1="20" y1="480" x2="130" y2="380" stroke="#E07B00" stroke-width="3"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">0<span>%</span></div>
+      <div class="stat-label">Earn Commission</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">50<span>+</span></div>
+      <div class="stat-label">Hotel Partners</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">24<span>/7</span></div>
+      <div class="stat-label">Availability</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100<span>%</span></div>
+      <div class="stat-label">Best Rate Guarantee</div>
+    </div>
+  </div>
+
+  <section class="section" style="background: var(--white);">
+    <div class="section-header">
+      <span class="section-tag">Why Choose Arivo Hotel</span>
+      <h2 class="section-title">The <em>Marketplace</em> Advantage</h2>
+      <p class="section-sub">A smarter platform where hotels earn commission, guests book contactlessly, and no platform fee is ever charged.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">💸</div>
+        <h3>No Platform Fee</h3>
+        <p>Arivo Hotel charges zero platform fees to hotels. There are no subscription costs, no setup charges, and no monthly bills — ever.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏨</div>
+        <h3>Hotels Earn Commission</h3>
+        <p>Every time a guest books a transfer through your hotel, you earn a commission automatically. A new revenue stream with zero effort.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>Contactless for Guests</h3>
+        <p>Guests browse, select, and confirm their transfer entirely online — no front desk queues, no cash, no physical paperwork required.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Best Available Rate</h3>
+        <p>Our marketplace surfaces the most competitive rates from verified transport providers so guests always get the best deal at booking.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Full Transparency</h3>
+        <p>Hotels see all rates, bookings, and commissions in real time. No hidden markups — just clear, honest numbers on your dashboard.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Access</h3>
+        <p>Register once and your hotel is live on the marketplace immediately. No lengthy onboarding, no contracts — just register and earn.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-section">
+    <div class="section-header">
+      <span class="section-tag">Simple Process</span>
+      <h2 class="section-title" style="color:white;">How It <em style="color:var(--orange-light)">Works</em></h2>
+      <p class="section-sub">Get your hotel on the marketplace in four easy steps.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <h3>Register Your Hotel</h3>
+        <p>Sign up for free — no fees, no contracts. Just your hotel details and you're in.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <h3>Access Rates</h3>
+        <p>Instantly browse the best available transportation rates from verified providers.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <h3>Offer Your Guests</h3>
+        <p>Share transfer options directly with guests at checkout — seamless and branded.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <h3>Earn Commission</h3>
+        <p>Every guest transfer booked through your hotel earns you commission automatically — no platform fee, no effort.</p>
+      </div>
+    </div>
+  <!-- No commission banner -->
+  <section style="background: var(--orange); padding: 48px 8%; text-align: center;">
+    <p style="font-family: var(--font-display); font-size: clamp(22px,3vw,36px); font-weight:600; color:white; margin-bottom:16px;">
+      Hotels Gain Commission. No Platform Fee. Guests Book Contactless.
+    </p>
+    <p style="font-size:16px; color:rgba(255,255,255,0.85); margin-bottom:28px; font-weight:300;">
+      Arivo Hotel puts more value back in your hands — earn on every guest transfer while we handle the marketplace for free.
+    </p>
+    <button class="btn-outline" style="border-color:white; color:white;" onclick="showPage('register')">Register Your Hotel Now →</button>
+  </section>
+
+  <section class="testimonial-section">
+    <span class="section-tag">Hotel Partner Reviews</span>
+    <p class="testimonial-quote">"Arivo Hotel transformed how we handle guest transfers. Our guests get the best rates, we earn commission on every booking, and the whole process is completely transparent. It's a game changer for our front desk team."</p>
+    <p class="testimonial-author">— General Manager, Grand Hyatt Kuala Lumpur</p>
+  </section>
+</div>
+
+<!-- ===================== BOOK PAGE ===================== -->
+<div id="page-book" class="page">
+  <div class="book-hero">
+    <span class="section-tag">Reserve Your Seat</span>
+    <h1>Book a Transfer</h1>
+    <p>Complete the form below and our team will confirm your booking within minutes.</p>
+  </div>
+  <div class="book-form-section">
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-section-title">Journey Details</div>
+        <div class="form-group">
+          <label>Pickup Airport</label>
+          <select>
+            <option value="">Select Airport</option>
+            <option>Kuala Lumpur International (KLIA)</option>
+            <option>klia2</option>
+            <option>Subang Airport (SZB)</option>
+            <option>Penang International</option>
+            <option>Kota Kinabalu International</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Destination Hotel</label>
+          <input type="text" placeholder="Hotel name & address"/>
+        </div>
+        <div class="form-group">
+          <label>Flight Number</label>
+          <input type="text" placeholder="e.g. MH 370"/>
+        </div>
+        <div class="form-group">
+          <label>Arrival Date & Time</label>
+          <input type="datetime-local"/>
+        </div>
+        <div class="form-group">
+          <label>Number of Passengers</label>
+          <select>
+            <option>1 Passenger</option>
+            <option>2 Passengers</option>
+            <option>3 Passengers</option>
+            <option>4 Passengers</option>
+            <option>5+ Passengers (Group)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Vehicle Type</label>
+          <select>
+            <option>Sedan (1–3 pax)</option>
+            <option>MPV (4–6 pax)</option>
+            <option>Van (7–10 pax)</option>
+            <option>Luxury Sedan</option>
+          </select>
+        </div>
+        <hr class="form-divider"/>
+        <div class="form-section-title">Passenger Details</div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="As on passport"/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+60 12 345 6789"/>
+        </div>
+        <div class="form-group full">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@email.com"/>
+        </div>
+        <div class="form-group full">
+          <label>Special Requests (Optional)</label>
+          <textarea placeholder="e.g. child seat, extra luggage, wheelchair access..."></textarea>
+        </div>
+        <div class="form-submit">
+          <button class="btn-primary" onclick="submitBooking()">Request Booking</button>
+        </div>
+        <div class="success-msg" id="bookingSuccess">
+          ✅ Thank you! Your booking request has been received. We'll confirm via email within 15 minutes.
+        </div>
+        <p class="form-note">🔒 Your information is secure. No payment required at this stage.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ABOUT PAGE ===================== -->
+<div id="page-about" class="page">
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="about-hero-inner">
+      <div>
+        <span class="section-tag">Our Story</span>
+        <h1>Built by<br/>Someone Who<br/><em>Lived It</em></h1>
+        <p>Nearly two decades inside hotel operations. Thousands of guest journeys. One problem that never got fixed — until now.</p>
+      </div>
+      <div class="about-values">
+        <div class="value-card">
+          <div class="icon">🎯</div>
+          <h4>Industry-First</h4>
+          <p>Built by a hotelier, for hoteliers. Every feature solves a real pain point.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">💰</div>
+          <h4>Revenue Back</h4>
+          <p>Stop giving away commission. Start earning it on every single transfer.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">📱</div>
+          <h4>Contactless</h4>
+          <p>Guests book themselves. No calls, no front desk, no friction.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">🔓</div>
+          <h4>No Lock-In</h4>
+          <p>No platform fee. No contracts. Just a better way to serve your guests.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Punchy Story Section -->
+  <section style="background: var(--white); padding: 0;">
+
+    <!-- Opening statement full-width dark band -->
+    <div style="background: var(--navy); padding: 72px 8%; text-align: center;">
+      <p style="font-family: var(--font-display); font-size: clamp(28px,4vw,52px); font-weight: 600; color: var(--white); line-height: 1.3; max-width: 860px; margin: 0 auto;">
+        "After <em style="color:var(--orange-light);">almost 20 years</em> in hotel hospitality, I watched the industry hand millions in revenue to OTAs and transport apps — and call it a service."
+      </p>
+    </div>
+
+    <!-- Story blocks -->
+    <div class="about-story" style="padding-top: 80px;">
+      <div class="about-image-placeholder" style="background: linear-gradient(135deg, #0F1E2B 0%, #1a3a5c 100%);">
+        <div style="text-align:center; padding: 40px;">
+          <div style="font-size: 72px; margin-bottom: 20px;">🏨</div>
+          <div style="font-family: var(--font-display); font-size: 22px; color: var(--orange-light); letter-spacing: 2px;">20 YEARS</div>
+          <div style="font-size: 12px; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-top: 8px;">HOTEL HOSPITALITY</div>
+          <div style="margin: 28px auto; width: 1px; height: 60px; background: linear-gradient(to bottom, transparent, var(--orange), transparent);"></div>
+          <div style="font-family: var(--font-display); font-size: 22px; color: var(--orange-light); letter-spacing: 2px;">1 BIG IDEA</div>
+          <div style="font-size: 12px; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-top: 8px;">TO FIX IT ALL</div>
+        </div>
+      </div>
+      <div class="about-story-text">
+        <span class="section-tag">The Problem We Refused to Ignore</span>
+        <h2 style="margin-bottom: 28px;">The Revenue Was Always There.<br/>Hotels Just Never Kept It.</h2>
+        <p>Every day, hotel guests land at the airport and need a transfer. Every day, hotels watch that moment — and that money — slip to an OTA, a transport app, or a random taxi rank. The hotel did nothing wrong. The system was just never built for them.</p>
+        <p>After nearly two decades on the inside — front desk, operations, management — I saw this pattern repeat across every property I worked with. It wasn't a small leak. It was a structural gap worth <strong>millions of dollars a year</strong>, handed away without question.</p>
+        <p>The pain point was obvious. The solution was overdue. So I built it.</p>
+      </div>
+    </div>
+
+    <!-- Three punchy callout blocks -->
+    <div style="display: grid; grid-template-columns: repeat(3,1fr); background: var(--cream-dark);">
+      <div style="padding: 56px 40px; border-right: 1px solid var(--cream-dark);">
+        <div style="font-family: var(--font-display); font-size: 52px; font-weight:700; color: var(--orange); line-height:1;">OTAs</div>
+        <div style="font-size: 13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color: var(--gray); margin: 10px 0 16px;">Were winning. Every. Time.</div>
+        <p style="font-size: 14px; color: var(--gray); line-height:1.7;">Platforms like Grab, Klook, and booking apps collected commission on transfers your guests took because of your hotel. You got nothing. We change that.</p>
+      </div>
+      <div style="padding: 56px 40px; border-right: 1px solid var(--cream-dark); background: var(--navy);">
+        <div style="font-family: var(--font-display); font-size: 52px; font-weight:700; color: var(--orange-light); line-height:1;">Hotels</div>
+        <div style="font-size: 13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color: rgba(255,255,255,0.4); margin: 10px 0 16px;">Deserve better.</div>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.55); line-height:1.7;">You have the relationship. You have the trust. You have the guest standing at your front desk. You should have the revenue too.</p>
+      </div>
+      <div style="padding: 56px 40px;">
+        <div style="font-family: var(--font-display); font-size: 52px; font-weight:700; color: var(--orange); line-height:1;">Arivo</div>
+        <div style="font-size: 13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color: var(--gray); margin: 10px 0 16px;">Was built to fix it.</div>
+        <p style="font-size: 14px; color: var(--gray); line-height:1.7;">A marketplace where hotels own the transfer experience, earn commission on every booking, and guests book contactlessly — with zero platform fee.</p>
+      </div>
+    </div>
+
+    <!-- Closing founder statement -->
+    <div style="padding: 80px 8%; background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+      <div>
+        <span class="section-tag">The Mission</span>
+        <h2 style="font-family: var(--font-display); font-size: clamp(32px,3.5vw,46px); font-weight:600; color:var(--navy); line-height:1.2; margin-bottom: 24px;">
+          Give the Revenue Back<br/>to the People Who<br/><em style="color:var(--orange);">Earned It</em>
+        </h2>
+        <p style="font-size: 15px; color: var(--gray); line-height: 1.9; margin-bottom: 20px;">
+          Arivo Hotel isn't just a product. It's a stand against a broken system. The hospitality industry deserves a platform that works <em>for</em> hotels — not one that extracts value from them.
+        </p>
+        <p style="font-size: 15px; color: var(--gray); line-height: 1.9; margin-bottom: 32px;">
+          With passion to solve the problem and a commitment to making the industry better, we built something simple, powerful, and completely free for hotels to use. Because great hospitality should be rewarded — not taxed.
+        </p>
+        <button class="btn-primary" onclick="showPage('register')">Join the Movement — Register Free</button>
+      </div>
+      <div style="background: var(--navy); border-radius: 8px; padding: 48px; position: relative; overflow: hidden;">
+        <div style="position:absolute; top:-20px; right:-20px; font-size:120px; opacity:0.04;">✈</div>
+        <div style="font-family: var(--font-display); font-size: 20px; font-style: italic; color: var(--white); line-height: 1.6; margin-bottom: 32px;">
+          "I didn't build Arivo Hotel because it was a good business idea. I built it because after 20 years, I was tired of watching great hotels leave money on the table — and I knew exactly how to stop it."
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="width:48px; height:48px; background: rgba(245,166,35,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px;">👤</div>
+          <div>
+            <div style="font-family: var(--font-display); font-size:18px; font-weight:600; color:var(--white);">Founder, Arivo Hotel</div>
+            <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--orange-light); margin-top:4px;">20 Years · Hotel Hospitality</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <span class="section-tag">The Team</span>
+    <h2 class="section-title">People Behind <em style="color:var(--orange-light)">Arivo</em></h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👨‍💼</div>
+        <h4>Ahmad Farid</h4>
+        <div class="role">Founder & CEO</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩‍💻</div>
+        <h4>Sarah Lim</h4>
+        <div class="role">Operations Manager</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👨‍🔧</div>
+        <h4>Raj Kumar</h4>
+        <div class="role">Fleet Manager</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== CONTACT PAGE ===================== -->
+<div id="page-contact" class="page">
+  <div class="contact-hero">
+    <span class="section-tag">Get In Touch</span>
+    <h1>Contact Us</h1>
+    <p>We're available 24/7 for bookings, enquiries, and support.</p>
+  </div>
+  <div class="contact-section">
+    <div class="contact-info">
+      <h3>We're Here to Help</h3>
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div class="contact-item-text">
+          <strong>Phone</strong>
+          <span>+60 12 345 6789</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉️</div>
+        <div class="contact-item-text">
+          <strong>Email</strong>
+          <span>hello@arivohotel.com</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💬</div>
+        <div class="contact-item-text">
+          <strong>WhatsApp</strong>
+          <span>+60 12 345 6789</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">⏰</div>
+        <div class="contact-item-text">
+          <strong>Hours</strong>
+          <span>24 hours, 7 days a week</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div class="contact-item-text">
+          <strong>Based In</strong>
+          <span>Kuala Lumpur, Malaysia</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-card">
+      <div class="form-grid">
+        <div class="form-section-title" style="font-size:24px;">Send a Message</div>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Full name"/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+60 12 345 6789"/>
+        </div>
+        <div class="form-group full">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@email.com"/>
+        </div>
+        <div class="form-group full">
+          <label>Subject</label>
+          <select>
+            <option>General Enquiry</option>
+            <option>Booking Assistance</option>
+            <option>Corporate Account</option>
+            <option>Complaint / Feedback</option>
+            <option>Partnership</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Message</label>
+          <textarea placeholder="How can we help you?"></textarea>
+        </div>
+        <div class="form-submit">
+          <button class="btn-primary" onclick="submitContact()">Send Message</button>
+        </div>
+        <div class="success-msg" id="contactSuccess">
+          ✅ Message sent! We'll get back to you within 2 hours.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FAQ PAGE ===================== -->
+<div id="page-faq" class="page">
+  <div class="faq-hero">
+    <span class="section-tag">Help Centre</span>
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything you need to know about Arivo Hotel Transfer.</p>
+  </div>
+  <div class="faq-section">
+    <div class="faq-category">
+      <div class="faq-category-title">Booking</div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How do I book a transfer? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Simply click "Book a Ride" in the navigation, fill in your flight and hotel details, and submit the form. You'll receive a confirmation email within 15 minutes with your driver's details and a booking reference.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How far in advance should I book? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>We recommend booking at least 24 hours in advance to guarantee availability. However, we do accept last-minute bookings subject to driver availability — contact us via WhatsApp for urgent requests.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Can I modify or cancel my booking? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Yes. Modifications can be made up to 4 hours before your pickup time at no charge. Cancellations made 12+ hours in advance are fully refunded. Please contact us via email or WhatsApp to make changes.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-category">
+      <div class="faq-category-title">At the Airport</div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Where will my driver meet me? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Your driver will be waiting at the arrivals hall holding a name board with your name clearly displayed. The exact meeting point will be included in your booking confirmation email.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          What if my flight is delayed? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>No worries — we track all flights in real time. If your flight is delayed, your driver will automatically adjust their arrival time. There are no extra charges for flight delays. You don't need to call us.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How much luggage can I bring? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Standard bookings include up to 2 large suitcases and 2 carry-on bags per person. If you have extra luggage or oversized items (surfboards, strollers, etc.), please mention it in the special requests field when booking.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-category">
+      <div class="faq-category-title">Pricing & Payment</div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How is pricing calculated? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Pricing is based on the airport, destination hotel, and vehicle type. All prices are fixed — no surge pricing, no hidden fees. You'll receive a full price quote in your booking confirmation before any payment is required.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          When and how do I pay? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Payment is due upon confirmation of your booking. We accept online bank transfer, credit/debit card, and cash payment to the driver. Corporate accounts can arrange monthly invoicing.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Do you offer corporate rates? <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Yes! We offer discounted corporate rates for businesses with regular transfer needs. Contact us via the Contact page or email us at hello@arivohotel.com to discuss a corporate account package.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REGISTER PAGE ===================== -->
+<div id="page-register" class="page">
+  <div class="book-hero">
+    <span class="section-tag">Join the Marketplace</span>
+    <h1>Register Your Hotel</h1>
+    <p>Free to join. No platform fee. Earn commission on every guest transfer booked through your hotel.</p>
+  </div>
+
+  <!-- Benefits strip -->
+  <div style="background: var(--navy); padding: 32px 8%; display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; text-align: center;">
+    <div style="color:white;">
+      <div style="font-size:28px; font-weight:700; font-family:var(--font-display); color:var(--orange-light);">✓</div>
+      <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-top:4px;">Earn Commission</div>
+    </div>
+    <div style="color:white;">
+      <div style="font-size:28px; font-weight:700; font-family:var(--font-display); color:var(--orange-light);">FREE</div>
+      <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-top:4px;">Registration</div>
+    </div>
+    <div style="color:white;">
+      <div style="font-size:28px; font-weight:700; font-family:var(--font-display); color:var(--orange-light);">24/7</div>
+      <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-top:4px;">Rate Access</div>
+    </div>
+    <div style="color:white;">
+      <div style="font-size:28px; font-weight:700; font-family:var(--font-display); color:var(--orange-light);">100%</div>
+      <div style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-top:4px;">Transparent</div>
+    </div>
+  </div>
+
+  <div class="book-form-section">
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-section-title">Hotel Information</div>
+        <div class="form-group">
+          <label>Hotel Name</label>
+          <input type="text" placeholder="e.g. Grand Hyatt Kuala Lumpur"/>
+        </div>
+        <div class="form-group">
+          <label>Hotel Category</label>
+          <select>
+            <option>5-Star / Luxury</option>
+            <option>4-Star / Superior</option>
+            <option>3-Star / Standard</option>
+            <option>Boutique Hotel</option>
+            <option>Budget / Economy</option>
+            <option>Serviced Apartment</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Hotel Address</label>
+          <input type="text" placeholder="Full address including city and country"/>
+        </div>
+        <div class="form-group">
+          <label>Nearest Airport</label>
+          <select>
+            <option value="">Select Nearest Airport</option>
+            <optgroup label="Bangkok">
+              <option>Suvarnabhumi Airport — Bangkok (BKK)</option>
+              <option>Don Mueang International Airport — Bangkok (DMK)</option>
+            </optgroup>
+            <optgroup label="Northern Thailand">
+              <option>Chiang Mai International Airport (CNX)</option>
+              <option>Mae Fah Luang – Chiang Rai International Airport (CEI)</option>
+              <option>Phrae Airport (PRH)</option>
+              <option>Nan Nakhon Airport (NNT)</option>
+              <option>Lampang Airport (LPT)</option>
+              <option>Mae Hong Son Airport (HGN)</option>
+              <option>Pai Airport (PYY)</option>
+              <option>Phitsanulok Airport (PHS)</option>
+              <option>Tak Airport (TKT)</option>
+              <option>Sukhothai Airport (THS)</option>
+            </optgroup>
+            <optgroup label="Northeastern Thailand">
+              <option>Udon Thani International Airport (UTH)</option>
+              <option>Khon Kaen Airport (KKC)</option>
+              <option>Nakhon Ratchasima Airport (NAK)</option>
+              <option>Ubon Ratchathani Airport (UBP)</option>
+              <option>Buri Ram Airport (BFV)</option>
+              <option>Roi Et Airport (ROI)</option>
+              <option>Sakon Nakhon Airport (SNO)</option>
+              <option>Nakhon Phanom Airport (KOP)</option>
+              <option>Loei Airport (LOE)</option>
+            </optgroup>
+            <optgroup label="Central & Eastern Thailand">
+              <option>U-Tapao International Airport — Pattaya/Rayong (UTP)</option>
+            </optgroup>
+            <optgroup label="Southern Thailand">
+              <option>Phuket International Airport (HKT)</option>
+              <option>Krabi International Airport (KBV)</option>
+              <option>Koh Samui Airport (USM)</option>
+              <option>Hat Yai International Airport (HDY)</option>
+              <option>Nakhon Si Thammarat Airport (NST)</option>
+              <option>Surat Thani Airport (URT)</option>
+              <option>Trang Airport (TST)</option>
+              <option>Chumphon Airport (CJM)</option>
+              <option>Narathiwat Airport (NAW)</option>
+              <option>Pattani Airport (PAN)</option>
+              <option>Hua Hin Airport (HHQ)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Rooms</label>
+          <select>
+            <option>Under 50 rooms</option>
+            <option>50 – 100 rooms</option>
+            <option>100 – 300 rooms</option>
+            <option>300+ rooms</option>
+          </select>
+        </div>
+        <hr class="form-divider"/>
+        <div class="form-section-title">Contact Person</div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="General Manager / Front Office Manager"/>
+        </div>
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" placeholder="e.g. General Manager"/>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="work@hotelname.com"/>
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp</label>
+          <input type="tel" placeholder="+60 12 345 6789"/>
+        </div>
+        <div class="form-group full">
+          <label>How did you hear about Arivo Hotel?</label>
+          <select>
+            <option>Google Search</option>
+            <option>Referral from another hotel</option>
+            <option>Social Media</option>
+            <option>Industry Event</option>
+            <option>Direct Outreach</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-submit">
+          <button class="btn-primary" onclick="submitRegister()">Complete Registration — It's Free</button>
+        </div>
+        <div class="success-msg" id="registerSuccess">
+          🎉 Welcome to Arivo Hotel! Your registration is received. Our team will contact you within 24 hours to activate your marketplace access.
+        </div>
+        <p class="form-note">🔒 No credit card required. No platform fee. Earn commission from day one.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#" onclick="showPage('home')">
+        <svg width="32" height="32" viewBox="0 0 80 80" fill="none" style="filter: drop-shadow(0 0 6px rgba(245,166,35,0.5));">
+          <circle cx="40" cy="42" r="36" fill="rgba(245,166,35,0.06)" stroke="rgba(245,166,35,0.2)" stroke-width="1"/>
+          <polygon points="40,8 72,68 8,68" fill="#FFFFFF"/>
+          <polygon points="40,26 54,54 26,54" fill="#0D1820"/>
+          <rect x="26" y="62" width="28" height="8" fill="#0D1820"/>
+          <polygon points="10,67 12,62 42,30 46,34 12,69" fill="#F5A623"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span>ARIVO</span>
+          <span>HOTEL TRANSFER</span>
+        </div>
+      </a>
+      <p>Professional airport-to-hotel transfer services. Reliable, punctual, and built for the modern traveller.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a onclick="showPage('home')">Home</a></li>
+        <li><a onclick="showPage('register')">Register Now</a></li>
+        <li><a onclick="showPage('about')">About Us</a></li>
+        <li><a onclick="showPage('faq')">FAQ</a></li>
+        <li><a onclick="showPage('contact')">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a>Airport Pickup</a></li>
+        <li><a>Hotel Drop-off</a></li>
+        <li><a>Group Transfers</a></li>
+        <li><a>Corporate Accounts</a></li>
+        <li><a>Luxury Fleet</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a>hello@arivohotel.com</a></li>
+        <li><a>+60 12 345 6789</a></li>
+        <li><a>WhatsApp Us</a></li>
+        <li><a>Kuala Lumpur, Malaysia</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 <span>Arivo Hotel Transfer</span>. All rights reserved.</p>
+    <p>arivohotel.com</p>
+  </div>
+</footer>
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function submitRegister() {
+    const msg = document.getElementById('registerSuccess');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 8000);
+  }
+
+  function submitBooking() {
+    const msg = document.getElementById('bookingSuccess');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 6000);
+  }
+
+  function submitContact() {
+    const msg = document.getElementById('contactSuccess');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 6000);
+  }
+</script>
+</body>
+</html>
