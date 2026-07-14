@@ -1126,7 +1126,7 @@
     </div>
   </div>
 
-  <section class="section" style="background: var(--white);">
+   <!-- ROI Calculator Preview --><section class="section" style="background: var(--white);">
     <div class="section-header">
       <span class="section-tag">Why Choose Arivo Hotel</span>
       <h2 class="section-title">The <em>Marketplace</em> Advantage</h2>
@@ -1871,6 +1871,52 @@
     msg.style.display = 'block';
     setTimeout(() => msg.style.display = 'none', 6000);
   }
+</script><script>
+  function roiSetup() {
+    const ids = ['roiRooms','roiOcc','roiAdopt','roiMargin','roiTrips'];
+    const els = {};
+    ids.forEach(id => els[id] = document.getElementById(id));
+    if (!els.roiRooms) return;
+
+    function roiFormatTHB(n) {
+      return '฿' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function roiCalculate() {
+      const totalRooms = Number(els.roiRooms.value);
+      const occupancy = Number(els.roiOcc.value) / 100;
+      const adoption = Number(els.roiAdopt.value) / 100;
+      const netMargin = Number(els.roiMargin.value);
+      const tripsPerStay = Number(els.roiTrips.value);
+
+      const occupiedNights = totalRooms * occupancy * 365;
+      const stays = occupiedNights / 2;
+      const transfersBooked = stays * adoption * tripsPerStay;
+      const annualRevenue = transfersBooked * netMargin;
+
+      document.getElementById('roiAnnualRev').textContent = roiFormatTHB(annualRevenue);
+    }
+
+    function roiUpdateLabels() {
+      document.getElementById('roiRoomsVal').textContent = els.roiRooms.value + ' rooms';
+      document.getElementById('roiOccVal').textContent = els.roiOcc.value + '%';
+      document.getElementById('roiAdoptVal').textContent = els.roiAdopt.value + '%';
+      document.getElementById('roiMarginVal').textContent = '฿' + els.roiMargin.value;
+      document.getElementById('roiTripsVal').textContent = els.roiTrips.value + (els.roiTrips.value == 1 ? ' trip' : ' trips');
+    }
+
+    ids.forEach(id => {
+      els[id].addEventListener('input', () => {
+        roiUpdateLabels();
+        roiCalculate();
+      });
+    });
+
+    roiUpdateLabels();
+    roiCalculate();
+  }
+
+  roiSetup();
 </script>
 </body>
 </html>
